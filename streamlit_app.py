@@ -1,11 +1,7 @@
 import streamlit as st
 
-st.title("🎈 SummitSphere, gestionamos tu evento!")
+st.title("🎈SummitSphere, gestionamos tu evento!")
 
-
-
-# Título de la página
-st.write('Cargar múltiples archivos..')
 
 # Descripción
 st.write('Por favor, sube tus archivos, para gestionar de la mejor manera tu evento')
