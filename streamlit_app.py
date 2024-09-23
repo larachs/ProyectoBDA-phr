@@ -3,14 +3,40 @@ import streamlit as st
 st.title("🎈SummitSphere, gestionamos tu evento!")
 
 
-# Descripción
-st.write('Por favor, sube tus archivos, para comenzar.')
+## Conexion con NEO4J
+from neo4j import GraphDatabase
 
-# Botón para subir archivos
-archivos_subidos = st.file_uploader("Seleccionar archivos", accept_multiple_files=True)
+# Conexión con Neo4j
+uri = "bolt://localhost:7687"  # O reemplázalo por el URI que obtuviste
+user = "neo4j"  # Tu usuario
+password = "12345678"  # La contraseña de tu DBMS
+driver = GraphDatabase.driver(uri, auth=(user, password))
 
-# Si se suben archivos, mostrar detalles
+# Función para cargar los archivos a Neo4j
+def guardar_archivo_en_neo4j(nombre, tipo, tamano, contenido):
+    with driver.session() as session:
+        session.run(
+            """
+            CREATE (a:Archivo {nombre: $nombre, tipo: $tipo, tamano: $tamano, contenido: $contenido})
+            """,
+            nombre=nombre, tipo=tipo, tamano=tamano, contenido=contenido
+        )
+
+# Configurar la aplicación en Streamlit
+st.title("Subir Archivos a Neo4j")
+
+# Subir múltiples archivos
+archivos_subidos = st.file_uploader("Selecciona archivos", accept_multiple_files=True)
+
 if archivos_subidos:
-    st.write(f"Se han subido {len(archivos_subidos)} archivos.")
     for archivo in archivos_subidos:
-        st.write(f"Nombre: {archivo.name}, Tipo: {archivo.type}, Tamaño: {archivo.size} bytes")
+        # Convertir el archivo en bytes
+        contenido = archivo.read()
+        
+        # Guardar metadatos e información del archivo en Neo4j
+        guardar_archivo_en_neo4j(archivo.name, archivo.type, archivo.size, contenido)
+        
+        st.success(f"Archivo {archivo.name} subido y guardado en Neo4j.")
+
+# Cerrar conexión cuando la app termina
+driver.close()
