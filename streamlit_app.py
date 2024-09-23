@@ -17,10 +17,16 @@ if archivos_subidos:
 
 ##### SUPUESTA CONEXION
 from neo4j import GraphDatabase
+import logging
 
-# URI examples: "neo4j://localhost", "neo4j+s://xxx.databases.neo4j.io"
-URI = "neo4j://localhost:7687"
+logging.basicConfig(level=logging.INFO)
+
+URI = "bolt://localhost:7687"
 AUTH = ("neo4j", "PabloHilaRache")
 
-with GraphDatabase.driver(URI, auth=AUTH) as driver:
-    driver.verify_connectivity()
+try:
+    with GraphDatabase.driver(URI, auth=AUTH) as driver:
+        driver.verify_connectivity()
+        print("Connection established successfully.")
+except Exception as e:
+    print(f"Error: {e}")
