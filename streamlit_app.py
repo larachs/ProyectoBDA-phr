@@ -6,7 +6,7 @@ st.title("🎈SummitSphere, gestionamos tu evento!")
 
 
 # Configuración de la conexión a Neo4jj
-uri = "bolt://localhost:7687"  # Utiliza el puerto Bolt que te proporcionaron
+uri = "bolt+s://localhost:7687"  # Utiliza el puerto Bolt que te proporcionaron
 driver = GraphDatabase.driver(uri, auth=("neo4j", "PabloHilaRache"))  # Reemplaza "password" con tu contraseña
 
 
