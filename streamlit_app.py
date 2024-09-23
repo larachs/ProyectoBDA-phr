@@ -3,40 +3,38 @@ import streamlit as st
 st.title("🎈SummitSphere, gestionamos tu evento!")
 
 
-## Conexion con NEO4J
+import os
 from neo4j import GraphDatabase
+import dotenv
 
-# Conexión con Neo4j
-uri = "bolt://localhost:7687"  # O reemplázalo por el URI que obtuviste
-user = "larachs"  # Tu usuario
-password = "PROYECTO-BDA"  # La contraseña de tu DBMS
-driver = GraphDatabase.driver(uri, auth=(user, password))
 
-# Función para cargar los archivos a Neo4j
-def guardar_archivo_en_neo4j(nombre, tipo, tamano, contenido):
+
+# Cargar las variables de entorno desde un archivo .env
+dotenv.load_dotenv("Neo4j-a0a2fa1d-Created-2023-11-06.txt")
+
+# Obtener la URI y las credenciales de Neo4j desde las variables de entorno
+URI = os.getenv("bolt://localhost:7687")
+USERNAME = os.getenv("neo4j")
+PASSWORD = os.getenv("PabloHilaRache")
+
+# Función para conectar y verificar la conexión con Neo4j
+def conectar_neo4j(uri, user, password):
+    try:
+        driver = GraphDatabase.driver(uri, auth=(user, password))
+        driver.verify_connectivity()  # Verifica la conectividad
+        st.success("Conexión a Neo4j establecida.")
+        return driver
+    except Exception as e:
+        st.error(f"Error al conectar con Neo4j: {e}")
+        return None
+
+# Conectar a Neo4j
+driver = conectar_neo4j(URI, USERNAME, PASSWORD)
+
+# Cerrar la conexión cuando ya no sea necesaria
+if driver:
     with driver.session() as session:
-        session.run(
-            """
-            CREATE (a:Archivo {nombre: $nombre, tipo: $tipo, tamano: $tamano, contenido: $contenido})
-            """,
-            nombre=nombre, tipo=tipo, tamano=tamano, contenido=contenido
-        )
-
-# Configurar la aplicación en Streamlit
-st.title("Subir Archivos a Neo4j")
-
-# Subir múltiples archivos
-archivos_subidos = st.file_uploader("Selecciona archivos", accept_multiple_files=True)
-
-if archivos_subidos:
-    for archivo in archivos_subidos:
-        # Convertir el archivo en bytes
-        contenido = archivo.read()
-        
-        # Guardar metadatos e información del archivo en Neo4j
-        guardar_archivo_en_neo4j(archivo.name, archivo.type, archivo.size, contenido)
-        
-        st.success(f"Archivo {archivo.name} subido y guardado en Neo4j.")
-
-# Cerrar conexión cuando la app termina
-driver.close()
+        st.write("Ejecutando consultas en Neo4j...")
+        # Aquí puedes agregar tus consultas a la base de datos usando el session
+        # Ejemplo: session.run("MATCH (n) RETURN n")
+    driver.close()  # Cerrar el driver
