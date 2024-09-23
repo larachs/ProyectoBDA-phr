@@ -1,5 +1,6 @@
 import streamlit as st
 from neo4j import GraphDatabase
+from neo4j.exceptions import ServiceUnavailable
 
 st.title("🎈SummitSphere, gestionamos tu evento!")
 
@@ -8,13 +9,12 @@ st.title("🎈SummitSphere, gestionamos tu evento!")
 uri = "bolt://localhost:7687"  # Utiliza el puerto Bolt que te proporcionaron
 driver = GraphDatabase.driver(uri, auth=("neo4j", "PabloHilaRache"))  # Reemplaza "password" con tu contraseña
 
-# Función para guardar los archivos en Neo4j
+
+
 def guardar_archivos_en_neo4j(archivos_subidos):
-    # Conectar a Neo4j
-    with driver:
+    try:
         with driver.session() as session:
             for archivo in archivos_subidos:
-                # Crear un nodo para cada archivo
                 session.write_transaction(
                     crear_nodo_archivo,
                     archivo.name,
@@ -22,6 +22,11 @@ def guardar_archivos_en_neo4j(archivos_subidos):
                     archivo.size
                 )
                 st.write(f"Archivo '{archivo.name}' guardado en la base de datos.")
+    except ServiceUnavailable as e:
+        st.error("Error al conectarse a Neo4j: " + str(e))
+    except Exception as e:
+        st.error("Ocurrió un error: " + str(e))
+
 
 def crear_nodo_archivo(tx, nombre, tipo, tamaño):
     # Crear un nodo con las propiedades del archivo
@@ -45,3 +50,4 @@ if st.button("Guardar en Neo4j"):
     else:
         st.warning("No se han subido archivos aún.")
 
+driver.close()
