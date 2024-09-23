@@ -16,3 +16,17 @@ if archivos_subidos:
     for archivo in archivos_subidos:
         st.write(f"Nombre: {archivo.name}, Tipo: {archivo.type}, Tamaño: {archivo.size} bytes")
 
+import dotenv
+import os
+from neo4j import GraphDatabase
+
+load_status = dotenv.load_dotenv("Neo4j-a0a2fa1d-Created-2023-11-06.txt")
+if load_status is False:
+    raise RuntimeError('Environment variables not loaded.')
+
+URI = os.getenv("bolt://localhost:7687")
+AUTH = (os.getenv("neo4j"), os.getenv("PabloHilaRache"))
+
+with GraphDatabase.driver(URI, auth=AUTH) as driver:
+    driver.verify_connectivity()
+    print("Connection established.")
