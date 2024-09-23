@@ -2,13 +2,7 @@ import streamlit as st
 
 st.title("🎈SummitSphere, gestionamos tu evento!")
 
-
-
-
-URI="bolt://localhost:7687"
-NEO4J_USER="neo4j"
-NEO4J_PASSWORD="PabloHilaRache"
-
+########SUBIR ARCHIVOS 
     # Descripción
 st.write('Por favor, sube tus archivos.')
 
@@ -21,17 +15,12 @@ if archivos_subidos:
     for archivo in archivos_subidos:
         st.write(f"Nombre: {archivo.name}, Tipo: {archivo.type}, Tamaño: {archivo.size} bytes")
 
-import dotenv
-import os
+##### SUPUESTA CONEXION
 from neo4j import GraphDatabase
 
-load_status = dotenv.load_dotenv("Neo4j-a0a2fa1d-Created-2023-11-06.txt")
-if load_status is False:
-    raise RuntimeError('Environment variables not loaded.')
-
-URI = os.getenv("bolt://localhost:7687")
-AUTH = (os.getenv("NEO4J_USERNAME"), os.getenv("NEO4J_PASSWORD"))
+# URI examples: "neo4j://localhost", "neo4j+s://xxx.databases.neo4j.io"
+URI = "bolt://localhost:7687"
+AUTH = ("neo4j", "PabloHilaRache")
 
 with GraphDatabase.driver(URI, auth=AUTH) as driver:
     driver.verify_connectivity()
-    print("Connection established.")
