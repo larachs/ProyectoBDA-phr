@@ -8,8 +8,8 @@ from neo4j import GraphDatabase
 
 # Conexión con Neo4j
 uri = "bolt://localhost:7687"  # O reemplázalo por el URI que obtuviste
-user = "neo4j"  # Tu usuario
-password = "12345678"  # La contraseña de tu DBMS
+user = "larachs"  # Tu usuario
+password = "PROYECTO-BDA"  # La contraseña de tu DBMS
 driver = GraphDatabase.driver(uri, auth=(user, password))
 
 # Función para cargar los archivos a Neo4j
