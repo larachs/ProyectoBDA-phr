@@ -6,7 +6,7 @@ st.title("🎈SummitSphere, gestionamos tu evento!")
 
 
 
-URI = "bolt://localhost:7687"
+URI = "bolt://localhost:7687" 
 AUTH = ("neo4j", "PabloHilaRache")  # Tus credenciales
 
 try:
