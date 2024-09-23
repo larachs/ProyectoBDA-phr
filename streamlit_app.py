@@ -5,16 +5,9 @@ st.title("🎈SummitSphere, gestionamos tu evento!")
 
 ##### SUPUESTA CONEXION
 from neo4j import GraphDatabase
-import logging
 
-logging.basicConfig(level=logging.INFO)
+# Configuración de la conexión a Neo4j
+uri = "bolt://localhost:7687"  # Utiliza el puerto Bolt que te proporcionaron
+driver = GraphDatabase.driver(uri, auth=("neo4j", "PabloHilaRache"))  # Reemplaza "password" con tu contraseña
+print("Conexion en progreso")
 
-URI = "bolt://localhost:7687"
-AUTH = ("neo4j", "PabloHilaRache")
-
-try:
-    with GraphDatabase.driver(URI, auth=AUTH) as driver:
-        driver.verify_connectivity()
-        print("Connection established successfully.")
-except Exception as e:
-    print(f"Error: {e}")
