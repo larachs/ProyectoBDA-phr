@@ -5,12 +5,8 @@ from neo4j.exceptions import ServiceUnavailable
 st.title("🎈SummitSphere, gestionamos tu evento!")
 
 
-
-
-
-
 # URI examples: "neo4j://localhost", "neo4j+s://xxx.databases.neo4j.io"
-URI = "bolt://localhost:7687"
+URI = "bolt://localhost:7474"
 AUTH = ("neo4j", "PabloHilaRache")
 
 with GraphDatabase.driver(URI, auth=AUTH) as driver:
