@@ -3,7 +3,6 @@ import streamlit as st
 st.title("🎈SummitSphere, gestionamos tu evento!")
 
 
-
 ##### SUPUESTA CONEXION
 from neo4j import GraphDatabase
 import logging
