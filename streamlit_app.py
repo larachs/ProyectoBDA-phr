@@ -32,7 +32,6 @@ def crear_nodo_archivo(tx, nombre, tipo, tamaño):
         nombre=nombre, tipo=tipo, tamaño=tamaño
     )
 
-
 # Descripción
 st.write('Por favor, sube tus archivos para guardarlos en Neo4j.')
 
