@@ -4,7 +4,7 @@ st.title("🎈SummitSphere, gestionamos tu evento!")
 
 
 # Descripción
-st.write('Por favor, sube tus archivos, para gestionar de la mejor manera tu evento')
+st.write('Por favor, sube tus archivos, para comenzar.')
 
 # Botón para subir archivos
 archivos_subidos = st.file_uploader("Seleccionar archivos", accept_multiple_files=True)
